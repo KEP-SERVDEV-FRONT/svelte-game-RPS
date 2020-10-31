@@ -1,13 +1,11 @@
 <script>
-import { onMount } from "svelte";
-
-// todo: 글자가 아니라 다른 방식으로 이쁘게 노출할것 고민하기
 const reciveText = ['가위', '바위', '보'];
-const resultText = ['비겼습니다.', '이겼습니다', '졌습니다.'];
+const resultText = ['DRAW', 'WIN', 'LOSE'];
 let result, 
     interval,
     score = 0,
-		bonus = 0,
+    bonus = 0,
+    isVisible = false,
     isDone = false,
     isStart = false,
     myNum = null;
@@ -20,7 +18,7 @@ const createRandomNum = maxCount => Math.round(Math.random() * maxCount);
 
 const startInterval = () => interval = setInterval(() => {
   computerNum = createRandomNum(2);
-}, 100);
+}, 80);
 
 const resetState = (done, start) => {
 	isDone = done;
@@ -70,88 +68,112 @@ const resultGame = calc => {
       break;
   }
 }
-
-onMount(() => {
-  // startGame()
-});
 </script>
 
-<!-- todo: 테스트용 레이아웃, 시간 나면 컴포넌트 분리하기, 최종 레이아웃 스타일링 해야함. -->
-<main class="main">
-  <div class="panel panel-score">
-    <dl class="desc">
-      <dt>COIN</dt>
-      <dd>{coin}</dd>
-    </dl>
-    <dl class="desc">
-      <dt>SCORE</dt>
-      <dd>{score}</dd>
-    </dl>
-  </div>
-  
-  <div class="panel panel-review">
-    <dl class="desc desc-computer">
-      <dt>
-        Computer
-      </dt>
-      <dd>
-				<!-- todo: 최초 시작시 잠깐 undefined 표시되는 이슈 해결 해야함 -->
-				{#if !isStart && !isDone}
-				ready
-				{:else}
-				{reciveText[computerNum]}
-        {/if}
-      </dd>
-    </dl>
-    <span class="txt-vs">VS</span>
-    <dl class="desc desc-user">
-      <dt>
-        User
-      </dt>
-      <dd>
-        {#if !isStart && isDone}
-        {reciveText[myNum]}
-        {/if}
-      </dd>
-    </dl>    
-  </div>
+<div class="wrap-container">
+  <main class="main">
+    <div class="panel panel-score">
+      <dl class="desc">
+        <dt>COIN</dt>
+        <dd>{coin}</dd>
+      </dl>
+      <dl class="desc">
+        <dt>SCORE</dt>
+        <dd>{score}</dd>
+      </dl>
+    </div>
+    
+    <div class="panel panel-review">
+      <dl class="desc desc-computer">
+        <dt>
+          COMPUTER
+        </dt>
+        <dd class:bg-comm={isStart || isDone} class="bg-rps{computerNum}">
+          {#if !isStart && !isDone}
+          READY
+          {:else}
+          <span class="screen-out">{reciveText[computerNum]}</span>
+          {/if}
+        </dd>
+      </dl>
+      <span class="txt-vs">VS</span>
+      <dl class="desc desc-user">
+        <dt>
+          USER
+        </dt>
+        <dd class:bg-comm={isDone} class="bg-rps{myNum}">
+          {#if !isStart && !isDone}
+          READY
+          {:else if !isStart && isDone}
+          <span class="screen-out">{reciveText[myNum]}</span>
+          {/if}
+        </dd>
+      </dl>    
+    </div>
 
-  <div class="item-control">
-    <button type="button" class="btn" on:click={sendNumber(0)} disabled={isDone}>가위</button>
-    <button type="button" class="btn" on:click={sendNumber(1)} disabled={isDone}>바위</button>
-    <button type="button" class="btn" on:click={sendNumber(2)} disabled={isDone}>보</button>
-  </div>
+    <div class="item-control">
+      <button type="button" class="btn btn-user btn-s" on:click={sendNumber(0)} disabled={!isStart || isDone}>가위</button>
+      <button type="button" class="btn btn-user btn-r" on:click={sendNumber(1)} disabled={!isStart || isDone}>바위</button>
+      <button type="button" class="btn btn-user btn-p" on:click={sendNumber(2)} disabled={!isStart || isDone}>보</button>
+    </div>
 
-	<!-- todo: 결과화면 인터렉션 추가하기 -->
-  <div class="wrap-content">
     {#if !isStart && isDone}
-    <div class="desc-result">
-      <strong class="tit-desc">{resultText[result]}</strong>
-      {#if result === 1}
-      <p class="txt-bonus">
-        보너스 코인 {bonus}개 획득!
-      </p>
-      {/if}
-      {#if isGamePossible}
-      <button type="button" class="btn" on:click={startGame}>재시작</button>
-      {:else}
-      <p class="txt-warning">
-				GAME OVER<br>
-				최종 점수: {score}
-			</p>
-			<button type="button" class="btn" on:click={newGame}>새 게임시작</button>
-      {/if}
+    <div class="wrap-content">
+      <div class="desc-result">
+        <strong class="tit-desc">
+          {resultText[result]}
+        </strong>
+        {#if result === 1}
+        <p class="txt-bonus">
+          Bonus Coin +{bonus}
+        </p>
+        {/if}
+        {#if isGamePossible}
+        <button type="button" class="btn btn-start" on:click={startGame}>Next Game</button>
+        {:else}
+        <p class="txt-result">
+          <strong>GAME OVER</strong><br>
+          <span class="txt-score">TOTAL SCORE {score}</span>
+        </p>
+        <button type="button" class="btn btn-start" on:click={newGame}>New Game</button>
+        {/if}
+      </div>
     </div>
     {/if}
 
     {#if !isStart && !isDone && isGamePossible}
-    <button type="button" class="btn" on:click={startGame}>게임시작</button>
+    <div class="wrap-content">
+      <button type="button" class="btn btn-about" on:click={() => isVisible = true}>About this game</button>
+      <button type="button" class="btn btn-start" on:click={startGame}>Game Start</button>
+    </div>
     {/if}
-  </div>
 
-	<!-- todo: 게임방법 ui 구현 해야함 -->
-</main>
+    {#if isVisible}
+    <div class="layer">
+      <div class="inner-layer">
+        <strong class="tit-layer">
+          <span class="r">가위</span> 
+          <span class="b">바위</span>
+          <span class="y">보</span>
+          게임
+        </strong>
+        <div class="layer-body">
+          <p class="txt-layer">
+            - 컴퓨터와 가위 바위 보 게임을 합니다.<br>
+            - 처음 코인 3개를 보유하고 게임을 시작합니다.<br>
+            - 게임 한판당 코인 1개를 소모합니다.<br>
+            - 코인 1개를 소모할 때 마다 100점을 얻습니다.<br>
+            - 게임 승리시 점수 100점을 얻고 보너스 코인을 1~3개 무작위로 얻습니다.<br>
+            - 게임 패배시 점수 100점을 잃습니다.<br>
+            - 코인이 0개가 되면 게임이 종료됩니다.<br>
+            <strong class="emph-g">코인을 다 소모할 때까지 최고 점수를 만들어 보세요!</strong>
+          </p>
+          <button type="button" class="btn btn-close" on:click={() => isVisible = !isVisible}>OK</button>
+        </div>
+      </div>
+    </div>
+    {/if}
+  </main>
+</div>
 
-<style lang="scss">
-
-</style>
+<style lang="scss" src="App.scss"></style>
