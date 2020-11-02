@@ -1,5 +1,4 @@
-@import "src/assets/styles/utils/mixin_media";
-@import "src/assets/styles/utils/var_color";
+@import "src/assets/styles/utils/util_set";
 
 .wrap-container {
   position: relative;
@@ -43,33 +42,6 @@
 }
 
 .panel {
-  display: flex;
-
-  &-score {
-    justify-content: space-between;
-
-    .desc {
-      min-width: 120px;
-      border-radius: 6px;
-      border: 3px solid $color-primary;
-      color: $color-white;
-      line-height: 30px;
-      background-color: $color-navy;
-      @include media-m {
-        width: auto;
-      }
-    }
-
-    dt,
-    dd {
-      padding: 0 10px;
-    }
-
-    dd {
-      border-top: 2px dashed $color-primary;
-    }
-  }
-
   &-review {
     justify-content: space-between;
     align-items: center;
@@ -82,38 +54,9 @@
       font-size: 12px;
     }
 
-    .desc {
-      width: 35%;
-      background-color: #111;
-      color: $color-white;
-
-      @include media-m {
-        width: 40%;
-      }
-
-      &-computer {
-        border-radius: 6px 0 0 6px;
-        border-right: 3px dashed $color-primary;
-      }
-
-      &-user {
-        border-radius: 0 6px 6px 0;
-        border-left: 3px dashed $color-primary;
-      }
-    }
-
-    dt {
-      line-height: 34px;
-    }
-
-    dd {
-      height: 100px;
-      line-height: 100px;
-    }
-
     .txt-vs {
       width: 30%;
-      font-size: 30px;
+      font-size: 36px;
       color: $color-warning;
 
       @include media-m {
@@ -126,7 +69,7 @@
 .item-control {
   position: relative;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   height: 180px;
   margin-top: 20px;
@@ -134,197 +77,14 @@
   border-radius: 6px;
 }
 
-.btn {
-  &-user {
-    overflow: hidden;
-    width: 110px;
-    height: 110px;
-    border-radius: 100%;
-    border: 3px solid $color-black;
-    font-size: 1px;
-    text-indent: -9999px;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    background-size: 106%;
-    box-shadow: 0 10px 0 $color-black;
-
-    @include media-m {
-      width: 80px;
-      height: 80px;
-    }
-
-    &:active {
-      margin-top: 12px;
-      box-shadow: 0 4px 0px 0px $color-black;
-    }
-  }
-
-  &-start {
-    min-width: 100px;
-    height: 53px;
-    margin-top: 10px;
-    padding: 0 20px;
-    border-radius: 6px;
-    border: 6px outset $color-primary;
-    color: $color-white;
-    line-height: 44px;
-    background-color: $color-primary;
-
-    &:active {
-      border: 6px inset $color-primary;
-      line-height: 53px;
-    }
-  }
-
-  &-r {
-    background-image: url(assets/images/1.gif);
-  }
-
-  &-p {
-    background-image: url(assets/images/2.gif);
-  }
-
-  &-s {
-    background-image: url(assets/images/0.gif);
-  }
-
-  &-about {
-    height: 53px;
-    margin-top: 10px;
-    padding: 0 20px;
-    border-radius: 6px;
-    border: 6px outset $color-dark-gray;
-    color: $color-white;
-    line-height: 44px;
-    background-color: $color-dark-gray;
-
-    &:active {
-      border: 6px inset $color-dark-gray;
-      line-height: 53px;
-    }
-  }
-}
-
-.bg-comm {
-  &:before {
-    content: '';
-    display: block;
-    width: 90px;
-    height: 90px;
-    margin: 0 auto;
-    background-image: url(assets/images/sp-rps.gif);
-    background-repeat: no-repeat;
-    background-size: 180px;
-  }
-}
-
-.bg-rps0 {
-  &:before {
-    background-position: 0 0;
-  }
-}
-
-.bg-rps1 {
-  &:before {
-    background-position: -90px -10px;
-  }
-}
-
-.bg-rps2 {
-  &:before {
-    background-position: 0 -88px;
-  }
-}
-
 .wrap-content {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 180px;
+  margin-top: 20px;
+  padding-bottom: 10px;
   border-radius: 6px;
   background-color: $color-light-gray;
-}
-
-.tit-desc {
-  display: block;
-  font-size: 46px;
-  line-height: 50px;
-}
-
-.txt-bonus {
-  color: #009026;
-}
-
-.txt-result {
-  margin-top: 10px;
-  color: $color-warning;
-}
-
-.txt-score {
-  font-size: 12px;
-}
-
-.layer {
-  overflow-y: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  border-radius: 6px;
-  border: 6px solid $color-black;
-  color: $color-white;
-  background-color: rgba(18, 17, 41, .9);
-  font-family: Arial, Helvetica, sans-serif;
-  z-index: 100;
-
-  .btn-close {
-    height: 53px;
-    margin-top: 30px;
-    padding: 0 20px;
-    border-radius: 6px;
-    border: 6px outset $color-dark-gray;
-    color: $color-white;
-    line-height: 44px;
-    background-color: $color-dark-gray;
-
-    &:active {
-      border: 6px inset $color-dark-gray;
-      line-height: 53px;
-    }
-  }
-}
-
-.tit-layer {
-  font-size: 20px;
-
-  .r {
-    color: $color-r;
-  }
-
-  .b {
-    color: $color-b;
-  }
-
-  .y {
-    color: $color-y;
-  }
-}
-
-.txt-layer {
-  font-size: 16px;
-  line-height: 30px;
-
-  .emph-g {
-    color: $color-warning;
-  }
 }
