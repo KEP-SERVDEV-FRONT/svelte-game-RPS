@@ -28,3 +28,6 @@ Rock Paper Scissors!
   - 코인이 0개가 되면 게임 종료
   - 최종 점수 노출
   - 새 게임시작 버튼 제공
+  
+---
+<a href="https://damien-rps-game.netlify.app" target="_blank">게임 하기</a>
